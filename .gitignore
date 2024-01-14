@@ -2,3 +2,5 @@
 package-lock.json
 .env
 /source/__pycache__
+
+/orm/.gitignore

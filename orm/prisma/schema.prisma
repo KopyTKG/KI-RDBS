@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("SQL_URL")
+}
+
+model accessGroups {
+  aGroupID     Int            @id @default(autoincrement())
+  description  String?        @db.Text
+  doorsGroups  doorsGroups[]  @ignore
+  rightsGroups rightsGroups[] @ignore
+}
+
+model chips {
+  chipID   Int        @id @default(autoincrement())
+  macCode  String?    @db.Text
+  enabled  Int        @default(1)
+  emploies emploies[]
+  logs     logs[]
+}
+
+model days {
+  dayID      Int          @id @default(autoincrement())
+  day        String?      @db.Text
+  daysGroups daysGroups[] @ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model daysGroups {
+  tGroupID   Int?
+  dayID      Int?
+  timeGroups timeGroups? @relation(fields: [tGroupID], references: [tGroupID], onDelete: Restrict, onUpdate: Restrict, map: "daysGroups_ibfk_1")
+  days       days?       @relation(fields: [dayID], references: [dayID], onDelete: Restrict, onUpdate: Restrict, map: "daysGroups_ibfk_2")
+
+  @@index([dayID], map: "dayID")
+  @@index([tGroupID], map: "tGroupID")
+  @@ignore
+}
+
+model doors {
+  doorID      Int           @id @default(autoincrement())
+  MAC         String        @db.Text
+  description String?       @db.Text
+  doorsGroups doorsGroups[] @ignore
+  logs        logs[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model doorsGroups {
+  aGroupID     Int?
+  doorID       Int?
+  doors        doors?        @relation(fields: [doorID], references: [doorID], onDelete: Restrict, onUpdate: Restrict, map: "doorsGroups_ibfk_1")
+  accessGroups accessGroups? @relation(fields: [aGroupID], references: [aGroupID], onDelete: Restrict, onUpdate: Restrict, map: "doorsGroups_ibfk_2")
+
+  @@index([aGroupID], map: "aGroupID")
+  @@index([doorID], map: "doorID")
+  @@ignore
+}
+
+model emploies {
+  employeID    Int            @id @default(autoincrement())
+  chipID       Int?
+  firstname    String?        @db.VarChar(255)
+  lastname     String?        @db.VarChar(255)
+  employed     Int            @default(1)
+  chips        chips?         @relation(fields: [chipID], references: [chipID], onDelete: Restrict, onUpdate: Restrict, map: "emploies_ibfk_1")
+  rightsGroups rightsGroups[] @ignore
+
+  @@index([chipID], map: "chipID")
+  @@index([lastname, firstname], map: "idx_lastname_firstname")
+}
+
+model logs {
+  logID  Int      @id @default(autoincrement())
+  chipID Int
+  doorID Int
+  date   DateTime @db.Date
+  time   DateTime @db.Time(0)
+  chips  chips    @relation(fields: [chipID], references: [chipID], onUpdate: Restrict, map: "logs_ibfk_1")
+  doors  doors    @relation(fields: [doorID], references: [doorID], onUpdate: Restrict, map: "logs_ibfk_2")
+
+  @@index([doorID], map: "doorID")
+  @@index([chipID], map: "idx_chipID")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model rightsGroups {
+  employeID    Int?
+  accessGroup  Int?
+  timeGroup    Int?
+  emploies     emploies?     @relation(fields: [employeID], references: [employeID], onDelete: Restrict, onUpdate: Restrict, map: "rightsGroups_ibfk_1")
+  accessGroups accessGroups? @relation(fields: [accessGroup], references: [aGroupID], onDelete: Restrict, onUpdate: Restrict, map: "rightsGroups_ibfk_2")
+  timeGroups   timeGroups?   @relation(fields: [timeGroup], references: [tGroupID], onDelete: Restrict, onUpdate: Restrict, map: "rightsGroups_ibfk_3")
+
+  @@index([accessGroup], map: "accessGroup")
+  @@index([employeID], map: "employeID")
+  @@index([timeGroup], map: "timeGroup")
+  @@ignore
+}
+
+model timeGroups {
+  tGroupID     Int            @id @default(autoincrement())
+  timeFrom     DateTime?      @db.Time(0)
+  timeTo       DateTime?      @db.Time(0)
+  daysGroups   daysGroups[]   @ignore
+  rightsGroups rightsGroups[] @ignore
+}

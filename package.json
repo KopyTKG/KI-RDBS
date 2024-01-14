@@ -8,7 +8,8 @@
     "build": "rm -rf build/ && cd source/ && tsc",
     "lint": "eslint ./*.ts",
     "lint:fix": "eslint --fix",
-    "format": "prettier --write './*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "format": "prettier --write './*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "orm": "cd orm/ && npm run dev"
   },
   "repository": {
     "type": "git",

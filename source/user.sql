@@ -1,0 +1,10 @@
+CREATE USER 'dev'@'%' IDENTIFIED BY "test";
+
+REVOKE ALL PRIVILEGES ON *.* FROM 'dev'@'%';
+GRANT SELECT on RFID.* TO 'dev'@'%';
+
+FLUSH PRIVILEGES;
+
+DROP USER 'dev'@'%';
+
+FLUSH PRIVILEGES;
