@@ -1,0 +1,35 @@
+# generation rules
+days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+#groups
+timeGroups: 20
+#days
+maxDayPerGroup: 6
+
+#doors settings
+Doors:
+  Descriptions: ['Lab A1 Basement', 'Lab A2 Basement', 'Lab B1 Basement', 'Lab B2 Basement', 'Lab C1 Basement', 'Lab C2 Basement', 'Lab C3 Basement', 'Lab D1 Basement', 'Lab D2 Basement', 'Lab E1 Basement', 'Lab E2 Basement', 'Lab E3 Basement', 'Office floor 2', 'Office floor 3', 'Office floor 4', 'Office floor 5', 'Office floor 6', 'Office floor 7', 'Office floor 8', 'Office floor 9', 'Office floor 10', 'North door 1', 'North door 2', 'East door', 'South door', 'Server room -1 floor', 'Server room 2 floor', 'Server room 5 floor', 'Server room 9 floor', '3 floor management', '6 floor management', '9 floor management', '10 floor CEO Office']
+  Labs: 
+    A: 2
+    B: 2
+    C: 3
+    D: 2
+    E: 3
+  Offices: 
+    start: 2
+    end: 10
+
+# groups
+accessGroups: ['Office pass floor 2', 'Office pass floor 3', 'Office pass floor 4', 'Office pass floor 5', 'Office pass floor 6', 'Office pass floor 7', 'Office pass floor 8', 'Office pass floor 9', 'Office pass floor 10', 'Labs pass A', 'Labs pass B', 'Labs pass C', 'Labs pass D', 'Labs pass E', 'Main door access', 'Front line management', 'Mid level management', 'Top level management', 'CEO', 'Master admin', 'Admin'] 
+
+# Server rooms
+ServerRooms:
+  MasterAdmin: ["%Server%%-1 floor%","%Server%%2 floor%", "%Server%%5 floor%","%Server%%9 floor%"]
+  Admin: ["%Server%%2 floor%", "%Server%%5 floor%","%Server%%9 floor%"]
+
+Emploies:
+  Count: 95
+  Min: 4
+  Max: 10
+  logs:
+    min: 50
+    max: 500
